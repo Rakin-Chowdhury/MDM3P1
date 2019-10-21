@@ -11,7 +11,6 @@ Date:
         18/10/19
 Description:
 
-
 """
 
 #Required external moduals: pygame3
