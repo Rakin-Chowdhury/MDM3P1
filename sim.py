@@ -24,6 +24,11 @@ w = 600
 h = 500
 win = pygame.display.set_mode((w,h))
 
+#colours
+red = ((255,0,0))
+green = ((0,255,0))
+blue = ((0,0,255))
+
 
 class Bot:
     def __init__(self, id, x, y):
@@ -68,6 +73,13 @@ def drawGrid():
 
     return
 
+def drawBlock(brick, col):
+
+    rect = pygame.Rect(brick.x*(block_size+10), brick.y*(block_size+1), block_size+9, block_size)
+    pygame.draw.rect(win, col, rect)
+    return
+
+
 def placeBrick(id, Loc):
     """
     Desctiption:
@@ -80,9 +92,24 @@ def placeBrick(id, Loc):
     """
 
     brick = Block(id, Loc[0], Loc[1])
+    drawBlock(brick, red)
 
+    """
     rect = pygame.Rect(brick.x*(block_size+10), brick.y*(block_size+1), block_size+9, block_size)
     pygame.draw.rect(win, ((255,0,0)), rect)
+    """
+
+    return brick
+    
+
+def placePallet(id, Loc):
+
+    for i in range(2):
+        for j in range(2):
+            brick = Block(id, Loc[0]+i, Loc[1]+j)
+            drawBlock(brick,blue)
+
+    return
 
 
 
@@ -113,10 +140,11 @@ for x, y in bot:
 MainLoop = True
 
 drawGrid()
-placeBrick(0,(2,3))
 struc1 = [(x+5,5) for x in range(10)]
 for i in struc1:
     placeBrick(0,(i[0],i[1]))
+
+placePallet(0,(5,3))
 
 
 while MainLoop:
