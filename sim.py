@@ -25,9 +25,9 @@ h = 500
 win = pygame.display.set_mode((w,h))
 
 #colours
-red = ((255,0,0))
+red = ((80,25,0))
 green = ((0,255,0))
-blue = ((0,0,255))
+blue = ((135,206,235))
 
 
 class Bot:
@@ -64,7 +64,7 @@ def drawGrid():
     Arg(s) out:
         none
     """
-
+    win.fill((105,105,105))
     for y in range(h):
         for x in range(w):
             #rect = pygame.Rect(x*block_size, y*block_size, block_size, block_size)
@@ -100,7 +100,28 @@ def placeBrick(id, Loc):
     """
 
     return brick
-    
+
+def placeBot(id, Loc):
+    """
+    Desctiption:
+        Draws Brick to screen
+    Arg(s) in:
+        id [INT] - Object identification number
+        Loc [Tuple] - (x,y): Location of brick on screen
+    Arg(s) out:
+        Brick [Object]- Brick object
+    """
+
+    brick = Block(id, Loc[0], Loc[1])
+    #drawBlock(brick, green)
+    pygame.draw.circle(win,green,(brick.x*(block_size) ,brick.y*(block_size)),9)
+
+    """
+    rect = pygame.Rect(brick.x*(block_size+10), brick.y*(block_size+1), block_size+9, block_size)
+    pygame.draw.rect(win, ((255,0,0)), rect)
+    """
+
+    return brick
 
 def placePallet(id, Loc):
 
@@ -135,16 +156,29 @@ for x, y in bot:
     rect = pygame.Rect(x*(block_size+1), y*(block_size+1), block_size, block_size)
     pygame.draw.rect(win, ((255,0,0)), rect)
 """
+pygame.init()
+pygame.font.get_fonts()
+font = pygame.font.Font(pygame.font.get_default_font(), 24)
+text = font.render('Key: RED = Bricks, Blue = Supply, Green = Bot', True, (0,0,0), (255,255,255))
+textRect= text.get_rect()
+textRect.center = (block_size*31,block_size*50 )
+
 
 
 MainLoop = True
 
 drawGrid()
-struc1 = [(x+5,5) for x in range(10)]
+struc1 = [(x+10,10) for x in range(10)]
+struc2 = [(10,10+x) for x in range(10)]
+
 for i in struc1:
     placeBrick(0,(i[0],i[1]))
 
-placePallet(0,(5,3))
+
+placePallet(0,(10,7))
+placeBot(0,(8,8))
+
+win.blit(text,textRect)
 
 
 while MainLoop:
