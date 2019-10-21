@@ -99,8 +99,9 @@ def placeBot(id, Loc):
     """
 
     brick = Block(id, Loc[0], Loc[1])
-    #drawBlock(brick, green)
-    pygame.draw.circle(win,green,(brick.x*(block_size) ,brick.y*(block_size)),9)
+    drawBlock(brick, green)
+    #pygame.draw.circle(win,green,(brick.x*(block_size) ,brick.y*(block_size)),9)
+    #pygame.draw.circle(win,green,(brick.x,brick.y),9)
 
     """
     rect = pygame.Rect(brick.x*(block_size+10), brick.y*(block_size+1), block_size+9, block_size)
@@ -118,11 +119,7 @@ def placePallet(id, Loc):
 
     return
 
-
-def main():
-
-    pygame.init()
-
+def initialParameters():
     global win, block_size, w, h
     block_size = 9
     w = 600
@@ -134,48 +131,54 @@ def main():
     red = ((80,25,0))
     green = ((0,255,0))
     blue = ((135,206,235))
+    return
 
-
-
-
+def Key():
     pygame.font.get_fonts()
     font = pygame.font.Font(pygame.font.get_default_font(), 24)
-    text = font.render('Key: RED = Bricks, Blue = Supply, Green = Bot', True, (0,0,0), (255,255,255))
+    text = font.render('Key: Red = Bricks, Blue = Supply, Green = Bot', True, (0,0,0), (255,255,255))
     textRect= text.get_rect()
     textRect.center = (block_size*31,block_size*50 )
+    win.blit(text,textRect)
+    return
 
+def basicWall_1():
+    struc1 = [(x+10,10) for x in range(10)]
+    for i in struc1:
+        placeBrick(0,(i[0],i[1]))
 
+    return
+
+def main():
+
+    pygame.init()
+    clock = pygame.time.Clock()
+    initialParameters()
 
     MainLoop = True
 
 
-    struc1 = [(x+10,10) for x in range(10)]
-    struc2 = [(10,10+x) for x in range(10)]
-
-
-    clock = pygame.time.Clock()
     x=0
     while MainLoop:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 MainLoop = False
+
+        #drawGrid()
         win.fill((255,255,255))
-        drawGrid()
 
-        bot1 = placeBot(0,(8+x,8))
-        x = x+1
-
-        for i in struc1:
-            placeBrick(0,(i[0],i[1]))
-
-
+        basicWall_1()
         placePallet(0,(10,7))
+        Key()
+
+        bot1 = placeBot(0,(8,8+x))
+        x = x+1
+        if x == 10:
+            x = 0
 
 
-        win.blit(text,textRect)
 
-        #pygame.time.delay(10)
-        clock.tick(120)
+        clock.tick(5)
         pygame.display.flip()
 
     return
