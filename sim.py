@@ -55,7 +55,7 @@ def drawGrid():
             #rect = pygame.Rect(x*block_size, y*block_size, block_size, block_size)
             rect = pygame.Rect(x*(block_size+10), y*(block_size+1), block_size+9, block_size)
             pygame.draw.rect(win, ((255,255,255)), rect)
-    pygame.display.update()
+    #pygame.display.update()
 
     return
 
@@ -127,23 +127,35 @@ def initialParameters():
     win = pygame.display.set_mode((w,h))
 
     #colours
-    global red, green, blue
+    global red, green, blue, white
     red = ((80,25,0))
     green = ((0,255,0))
     blue = ((135,206,235))
+    white = (255,255,255)
     return
 
 def Key():
+    #messy code will clean up
     pygame.font.get_fonts()
     font = pygame.font.Font(pygame.font.get_default_font(), 24)
-    text = font.render('Key: Red = Bricks, Blue = Supply, Green = Bot', True, (0,0,0), (255,255,255))
+    text = font.render('Red = Bricks', True, (0,0,0), red)
     textRect= text.get_rect()
     textRect.center = (block_size*31,block_size*50 )
+    win.blit(text,textRect)
+
+    text = font.render('Blue = Supply', True, (0,0,0), blue)
+    textRect= text.get_rect()
+    textRect.center = (block_size*31,block_size*47 )
+    win.blit(text,textRect)
+
+    text = font.render('Green = Brick Bot', True, (0,0,0), green)
+    textRect= text.get_rect()
+    textRect.center = (block_size*31,block_size*44 )
     win.blit(text,textRect)
     return
 
 def basicWall_1():
-    struc1 = [(x+10,10) for x in range(10)]
+    struc1 = [(x+10,10) for x in range(4)]
     for i in struc1:
         placeBrick(0,(i[0],i[1]))
 
@@ -154,6 +166,10 @@ def main():
     pygame.init()
     clock = pygame.time.Clock()
     initialParameters()
+
+    testPath = [(10,8),(10,8),(10,9),(10,10),(10,9),(10,8),(10,9),(11,9),(11,10),(11,9),(10,9),(10,8),\
+                (10,9),(11,9),(12,9),(12,10),(12,9),(11,9),(10,9),(10,8),\
+                (10,9),(11,9),(12,9),(13,9),(13,10),(13,9),(12,9),(11,9),(10,9),(10,8)]
 
     MainLoop = True
 
@@ -170,15 +186,14 @@ def main():
         basicWall_1()
         placePallet(0,(10,7))
         Key()
-
-        bot1 = placeBot(0,(8,8+x))
+        if x >= len(testPath):
+            x=0
+        bot1 = placeBot(0,testPath[x])
         x = x+1
-        if x == 10:
-            x = 0
 
 
 
-        clock.tick(5)
+        clock.tick(3)
         pygame.display.flip()
 
     return
