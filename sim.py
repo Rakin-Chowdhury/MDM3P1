@@ -90,7 +90,7 @@ def placeBrick(id, Loc):
 def placeBot(id, Loc):
     """
     Desctiption:
-        Draws Brick to screen
+        Draws Bot to screen
     Arg(s) in:
         id [INT] - Object identification number
         Loc [Tuple] - (x,y): Location of brick on screen
@@ -138,7 +138,7 @@ def Key():
     #messy code will clean up
     pygame.font.get_fonts()
     font = pygame.font.Font(pygame.font.get_default_font(), 24)
-    text = font.render('Red = Bricks', True, (0,0,0), red)
+    text = font.render('Brown = Bricks', True, (0,0,0), red)
     textRect= text.get_rect()
     textRect.center = (block_size*31,block_size*50 )
     win.blit(text,textRect)
@@ -154,12 +154,12 @@ def Key():
     win.blit(text,textRect)
     return
 
-def basicWall_1():
-    struc1 = [(x+10,10) for x in range(4)]
-    for i in struc1:
+def basicWall(struc):
+    for i in struc:
         placeBrick(0,(i[0],i[1]))
 
-    return
+    return struc
+
 
 def main():
 
@@ -173,6 +173,7 @@ def main():
 
     MainLoop = True
 
+    bricked = []
 
     x=0
     while MainLoop:
@@ -183,13 +184,26 @@ def main():
         #drawGrid()
         win.fill((255,255,255))
 
-        basicWall_1()
+        wall = [(x+10,10) for x in range(4)]
         placePallet(0,(10,7))
+        basicWall(bricked)
         Key()
-        if x >= len(testPath):
-            x=0
+
         bot1 = placeBot(0,testPath[x])
         x = x+1
+
+        f2 = pygame.font.Font(pygame.font.get_default_font(), 8)
+
+        if x >= len(testPath):
+            x=0
+
+        if testPath[x] in wall:
+            bricked.append(testPath[x])
+
+
+
+
+
 
 
 
