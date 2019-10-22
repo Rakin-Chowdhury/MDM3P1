@@ -38,6 +38,8 @@ class Block:
         self.y = y
         self.size = (1,1)
 
+
+
 def drawGrid():
 
     """
@@ -160,6 +162,29 @@ def basicWall(struc):
 
     return struc
 
+def simplePath(start, points):
+
+    path = [start]
+
+    for i in points:
+        distx = abs(start[0] -  i[0])
+        disty = abs(start[1] -  i[1])
+
+        pathy = []
+        pathx = []
+        for y in range(disty):
+            pathy.append((start[0],start[1]+(y+1)))
+        for x in range(distx):
+            pathx.append((start[0]+(x+1),start[1]++(y+1)))
+
+
+        path = path + pathy + pathx
+        pathy.reverse()
+        pathx.reverse()
+        path = path + pathx + pathy + [start]
+
+    return path
+
 
 def main():
 
@@ -167,13 +192,15 @@ def main():
     clock = pygame.time.Clock()
     initialParameters()
 
-    testPath = [(10,8),(10,8),(10,9),(10,10),(10,9),(10,8),(10,9),(11,9),(11,10),(11,9),(10,9),(10,8),\
-                (10,9),(11,9),(12,9),(12,10),(12,9),(11,9),(10,9),(10,8),\
-                (10,9),(11,9),(12,9),(13,9),(13,10),(13,9),(12,9),(11,9),(10,9),(10,8)]
+    #testPath = [(10,8),(10,8),(10,9),(10,10),(10,9),(10,8),(10,9),(11,9),(11,10),(11,9),(10,9),(10,8),\
+                #(10,9),(11,9),(12,9),(12,10),(12,9),(11,9),(10,9),(10,8),\
+                #(10,9),(11,9),(12,9),(13,9),(13,10),(13,9),(12,9),(11,9),(10,9),(10,8)]
 
     MainLoop = True
 
     bricked = []
+    wall = [(x+10,10) for x in range(4)]
+    testPath = simplePath((10,8), wall)
 
     x=0
     while MainLoop:
@@ -184,7 +211,7 @@ def main():
         #drawGrid()
         win.fill((255,255,255))
 
-        wall = [(x+10,10) for x in range(4)]
+
         placePallet(0,(10,7))
         basicWall(bricked)
         Key()
@@ -196,6 +223,7 @@ def main():
 
         if x >= len(testPath):
             x=0
+            bricked = []
 
         if testPath[x] in wall:
             bricked.append(testPath[x])
