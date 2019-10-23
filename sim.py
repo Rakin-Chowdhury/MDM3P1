@@ -199,7 +199,13 @@ def main():
     MainLoop = True
 
     bricked = []
-    wall = [(x+10,10) for x in range(4)]
+    wall1 = [(x+10,10) for x in range(3)]
+    wall2 = [(10,10+x) for x in range(4)]
+
+    wall3 = [(x+10,14) for x in range(3)]
+    wall4 = [(13,10+x) for x in range(5)]
+
+    wall = wall1 + wall2 + wall3 + wall4
     testPath = simplePath((10,8), wall)
 
     x=0
@@ -235,7 +241,7 @@ def main():
 
 
 
-        clock.tick(3)
+        clock.tick(10)
         pygame.display.flip()
 
     return
