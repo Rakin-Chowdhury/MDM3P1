@@ -17,6 +17,12 @@ import pygame
 import sys
 
 class Bot:
+    """
+    Robot Object
+    atributes :
+
+
+    """
     def __init__(self, id, x, y):
         self.id = id
         self.x = x
@@ -63,6 +69,13 @@ def drawGrid():
     return
 
 def drawBlock(brick, col):
+    """
+    Description:
+        Draws rectangalar block to screen#
+    Arg(s) in:
+        brick [object]- Singular Brick object
+        col [Tuple] - RGB colour tuple
+    """
 
     rect = pygame.Rect(brick.x*(block_size+10), brick.y*(block_size+1), block_size+9, block_size)
     pygame.draw.rect(win, col, rect)
@@ -114,6 +127,15 @@ def placeBot(id, Loc):
     return brick
 
 def placePallet(id, Loc):
+    """
+    Description:
+        Places a 4x4 graphical pallet to screen
+    Arg(s) in:
+        id [INT] - Object identification number
+        Loc [Tuple] - (x,y): Location of brick on screen
+    Arg(s) out:
+        none
+    """
 
     for i in range(2):
         for j in range(2):
@@ -122,6 +144,14 @@ def placePallet(id, Loc):
 
     return
 def placeBoader():
+    """
+    Description:
+        Places simple boarder to separate simulation from information
+    Arg(s) in:
+        none
+    Arg(s) out:
+        none
+    """
 
     for i in range(6):
             rect = pygame.Rect(i*(block_size+9), h-10*(block_size), block_size+9, block_size)
@@ -135,6 +165,14 @@ def placeBoader():
 
 
 def initialParameters():
+    """
+    Description:
+        Setting global parameters such as dimentions and colours
+    Arg(s) In:
+        none
+    Arg(s) Out:
+        none
+    """
     global win, block_size, w, h
     block_size = 9
     w = 600
@@ -151,6 +189,10 @@ def initialParameters():
     return
 
 def Key():
+    """
+    Description:
+        Generates Key in GUI
+    """
     #messy code will clean up
     pygame.font.get_fonts()
     font = pygame.font.Font(pygame.font.get_default_font(), 24)
