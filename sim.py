@@ -6,14 +6,15 @@ Authors:
         Carys Rees,
         Caitlin Straw,
         Sam Richardson,
-        Jonah Edmonds
+        Jonah Edmonds :)
 Date:
         18/10/19
 Description:
 """
 
-#Required external moduals: pygame3
+#Requibrown external moduals: pygame3
 import pygame
+import sys
 
 class Bot:
     def __init__(self, id, x, y):
@@ -80,7 +81,7 @@ def placeBrick(id, Loc):
     """
 
     brick = Block(id, Loc[0], Loc[1])
-    drawBlock(brick, red)
+    drawBlock(brick, brown)
 
     """
     rect = pygame.Rect(brick.x*(block_size+10), brick.y*(block_size+1), block_size+9, block_size)
@@ -120,6 +121,18 @@ def placePallet(id, Loc):
             drawBlock(brick,blue)
 
     return
+def placeBoader():
+
+    for i in range(6):
+            rect = pygame.Rect(i*(block_size+9), h-10*(block_size), block_size+9, block_size)
+            pygame.draw.rect(win, (0,0,0), rect)
+    for i in range(9):
+            rect = pygame.Rect(6*(block_size+9), (i+((h/block_size))-9 )*(block_size), block_size, block_size)
+            pygame.draw.rect(win, (0,0,0), rect)
+
+    return
+
+
 
 def initialParameters():
     global win, block_size, w, h
@@ -129,38 +142,68 @@ def initialParameters():
     win = pygame.display.set_mode((w,h))
 
     #colours
-    global red, green, blue, white
-    red = ((80,25,0))
+    global brown, green, blue, white, grey
+    brown = ((80,25,0))
     green = ((0,255,0))
     blue = ((135,206,235))
     white = (255,255,255)
+    grey = (124,124,124)
     return
 
 def Key():
     #messy code will clean up
     pygame.font.get_fonts()
     font = pygame.font.Font(pygame.font.get_default_font(), 24)
-    text = font.render('Brown = Bricks', True, (0,0,0), red)
+
+    text = font.render('Bricks      ', True, (0,0,0), brown)
     textRect= text.get_rect()
-    textRect.center = (block_size*31,block_size*50 )
+    textRect.x = (block_size*0)
+    textRect.y = (h - block_size*9)
     win.blit(text,textRect)
 
-    text = font.render('Blue = Supply', True, (0,0,0), blue)
+    text = font.render('Supply    ', True, (0,0,0), blue)
     textRect= text.get_rect()
-    textRect.center = (block_size*31,block_size*47 )
+    textRect.x = (block_size*0)
+    textRect.y = (h - block_size*6)
     win.blit(text,textRect)
 
-    text = font.render('Green = Brick Bot', True, (0,0,0), green)
+    text = font.render('Brick Bot ', True, (0,0,0), green)
     textRect= text.get_rect()
-    textRect.center = (block_size*31,block_size*44 )
+    textRect.x = (block_size*0)
+    textRect.y = (h - block_size*3)
     win.blit(text,textRect)
+
     return
+
+def setStruc(type):
+    wall1 = [(x+10,10) for x in range(8)]
+    wall2 = [(10,11+x) for x in range(9)]
+
+    wall3 = [(x+10,20) for x in range(8)]
+    wall4 = [(17,11+x) for x in range(9)]
+
+    wall5 = [(14,11+x) for x in range(9)]
+
+    if type == 0:
+        struc = wall1
+    elif type == 1:
+        struc = wall1 + wall2
+    elif type == 2:
+        struc = wall1 + wall2 + wall3 + wall4
+    elif type == 3:
+        struc = wall1 + wall2 + wall3 + wall5 + wall4
+
+
+
+    return struc
 
 def basicWall(struc):
     for i in struc:
         placeBrick(0,(i[0],i[1]))
 
     return struc
+
+
 
 def simplePath(start, points):
 
@@ -186,7 +229,10 @@ def simplePath(start, points):
     return path
 
 
-def main():
+def guiMain(type):
+    runing = True
+
+
 
     pygame.init()
     clock = pygame.time.Clock()
@@ -199,14 +245,10 @@ def main():
     MainLoop = True
 
     bricked = []
-    wall1 = [(x+10,10) for x in range(3)]
-    wall2 = [(10,10+x) for x in range(4)]
-
-    wall3 = [(x+10,14) for x in range(3)]
-    wall4 = [(13,10+x) for x in range(5)]
-
-    wall = wall1 + wall2 + wall3 + wall4
+    wall = setStruc(int(type))
     testPath = simplePath((10,8), wall)
+
+
 
     x=0
     while MainLoop:
@@ -215,35 +257,70 @@ def main():
                 MainLoop = False
 
         #drawGrid()
-        win.fill((255,255,255))
 
 
-        placePallet(0,(10,7))
-        basicWall(bricked)
-        Key()
-
-        bot1 = placeBot(0,testPath[x])
-        x = x+1
-
-        f2 = pygame.font.Font(pygame.font.get_default_font(), 8)
-
-        if x >= len(testPath):
-            x=0
-            bricked = []
-
-        if testPath[x] in wall:
-            bricked.append(testPath[x])
+        if runing == True:
+            win.fill((255,255,255))
 
 
 
+            placePallet(0,(10,7))
+            basicWall(bricked)
+            Key()
+            placeBoader()
+
+            bot1 = placeBot(0,testPath[x])
+            x = x+1
+
+            f2 = pygame.font.Font(pygame.font.get_default_font(), 8)
+
+            if x >= len(testPath):
+                x=0
+                bricked = []
+
+            if testPath[x] in wall:
+                bricked.append(testPath[x])
+        else:
+            f2 = pygame.font.Font(pygame.font.get_default_font(), 50)
+            t3 = f2.render('Simulation Paused', True, (0,0,0), blue)
+            win.blit(t3, (70, h/2 -70))
 
 
 
 
 
-        clock.tick(10)
+
+
+
+
+        clock.tick(20)
         pygame.display.flip()
 
     return
 
+def help():
+    print("""
+    Help:
+
+    Ussage:
+
+    Key:
+
+
+            """)
+
+def main():
+    if __name__=='__main__':
+
+        if len(sys.argv) != 2:
+            help()
+        elif sys.argv[1] == "1":
+            guiMain(1)
+
+        else:
+            print("Incorrect Ussage")
+            help()
+
+
+    return
 main()
