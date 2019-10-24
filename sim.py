@@ -229,7 +229,7 @@ def simplePath(start, points):
     return path
 
 
-def guiMain(type):
+def guiMain(pathType,strucType):
     runing = True
 
 
@@ -245,7 +245,7 @@ def guiMain(type):
     MainLoop = True
 
     bricked = []
-    wall = setStruc(int(type))
+    wall = setStruc(int(strucType))
     testPath = simplePath((10,8), wall)
 
 
@@ -310,12 +310,16 @@ def help():
             """)
 
 def main():
+    strucModes = ("0","1","2","3")
     if __name__=='__main__':
 
-        if len(sys.argv) != 2:
+        if len(sys.argv) != 3:
             help()
-        elif sys.argv[1] == "1":
-            guiMain(1)
+        elif sys.argv[1]  == "simple":
+            if sys.argv[2] in strucModes:
+                guiMain(0,sys.argv[2])
+            else:
+                help()
 
         else:
             print("Incorrect Ussage")
