@@ -1,5 +1,3 @@
-
-
 def simplePath(start, points):
 
     path = [start]
@@ -11,21 +9,14 @@ def simplePath(start, points):
         pathy = []
         pathx = []
         for y in range(disty):
-            pathy.append((start[0],start[0]+(y+1)))
+            pathy.append((start[0],start[1]+(y+1)))
         for x in range(distx):
-            pathx.append((start[0]+(y+1),start[0]+(x+1)))
+            pathx.append((start[0]+(x+1),start[1]++(y+1)))
 
 
         path = path + pathy + pathx
         pathy.reverse()
         pathx.reverse()
-        path = path + pathx + pathy
+        path = path + pathx + pathy + [start]
 
     return path
-
-
-
-
-points = [(2,2),(2,3)]
-start = (0,0)
-print(simplePath(start,points))

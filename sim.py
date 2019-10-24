@@ -12,9 +12,10 @@ Date:
 Description:
 """
 
-#Requibrown external moduals: pygame3
+#Required external moduals: pygame
 import pygame
 import sys
+from simplePath import simplePath
 
 class Bot:
     """
@@ -46,10 +47,12 @@ class Block:
         self.size = (1,1)
 
 
-
+#drawGrid redundant function
+"""
 def drawGrid():
 
-    """
+
+
     Description:
         Draws background grid
     Arg(s) in:
@@ -57,7 +60,7 @@ def drawGrid():
         h [INT] - screen height
     Arg(s) out:
         none
-    """
+
     win.fill((105,105,105))
     for y in range(h):
         for x in range(w):
@@ -67,6 +70,7 @@ def drawGrid():
     #pygame.display.update()
 
     return
+"""
 
 def drawBlock(brick, col):
     """
@@ -247,42 +251,15 @@ def basicWall(struc):
 
 
 
-def simplePath(start, points):
-
-    path = [start]
-
-    for i in points:
-        distx = abs(start[0] -  i[0])
-        disty = abs(start[1] -  i[1])
-
-        pathy = []
-        pathx = []
-        for y in range(disty):
-            pathy.append((start[0],start[1]+(y+1)))
-        for x in range(distx):
-            pathx.append((start[0]+(x+1),start[1]++(y+1)))
-
-
-        path = path + pathy + pathx
-        pathy.reverse()
-        pathx.reverse()
-        path = path + pathx + pathy + [start]
-
-    return path
 
 
 def guiMain(pathType,strucType):
     runing = True
 
-
-
     pygame.init()
     clock = pygame.time.Clock()
     initialParameters()
 
-    #testPath = [(10,8),(10,8),(10,9),(10,10),(10,9),(10,8),(10,9),(11,9),(11,10),(11,9),(10,9),(10,8),\
-                #(10,9),(11,9),(12,9),(12,10),(12,9),(11,9),(10,9),(10,8),\
-                #(10,9),(11,9),(12,9),(13,9),(13,10),(13,9),(12,9),(11,9),(10,9),(10,8)]
 
     MainLoop = True
 
@@ -294,14 +271,16 @@ def guiMain(pathType,strucType):
 
     x=0
     while MainLoop:
+
+        x = x+1
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 MainLoop = False
 
-        #drawGrid()
-
 
         if runing == True:
+
             win.fill((255,255,255))
 
 
@@ -312,9 +291,7 @@ def guiMain(pathType,strucType):
             placeBoader()
 
             bot1 = placeBot(0,testPath[x])
-            x = x+1
 
-            f2 = pygame.font.Font(pygame.font.get_default_font(), 8)
 
             if x >= len(testPath):
                 x=0
@@ -345,13 +322,34 @@ def help():
     Help:
 
     Ussage:
+        -  Simple [Wall Configuration]
+            E.g sim.py -Simple -1
+            Executes simple path finding algroitm of a chosen wall type
 
     Key:
+        Alogrithms:
+            "Simple" - Basic path finder moves the differnce in x then y.
 
+        Wall types:
+            "1" - Simple walll      •••
+
+            "2" - Simple L wall     •••
+                                    •
+                                    •
+
+            "3" - Simple sqaure     •••
+                                    • •
+                                    •••
+
+            "4" - Simple flor plan  ••••••
+                                    •  • •
+                                    •  • •
+                                    ••••••
 
             """)
 
 def main():
+    #main --
     strucModes = ("0","1","2","3")
     if __name__=='__main__':
 
