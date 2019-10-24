@@ -272,7 +272,7 @@ def guiMain(pathType,strucType):
     x=0
     while MainLoop:
 
-        x = x+1
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -291,6 +291,8 @@ def guiMain(pathType,strucType):
             placeBoader()
 
             bot1 = placeBot(0,testPath[x])
+
+            x = x+1
 
 
             if x >= len(testPath):
